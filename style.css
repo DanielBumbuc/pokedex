@@ -1,0 +1,52 @@
+* {
+    margin: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: rgb(21, 21, 68);
+}
+
+.content-style {
+    max-width: 1920px;
+}
+
+.fill {
+    flex: 1;
+}
+
+nav {
+    height: 48px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 0 8px;
+}
+
+footer {
+    height: 48px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0 8px;
+}
+
+.main-section {
+    display: flex;
+    flex-wrap: wrap;
+    box-shadow: rgba(0, 0, 0, 1);
+}
+
+.poke-card {
+    cursor: pointer;
+    height: 200px;
+    width: 120px;
+    margin: 8px;
+    background-color: aliceblue;
+}
+
+
+
+.d-none {
+    display: none !important;
+}
