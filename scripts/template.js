@@ -7,12 +7,11 @@ mainButton = true;
 statsButton = false;
 evoButton = false;
 
-function getMainSection(currentPokemon) {  
+function getMainSection(currentPokemon) {
     let pokeId = currentPokemon.id;
-    let pokeImgUrl = currentPokemon.sprites.other.dream_world.front_default;
-    let pokeTypes = currentPokemon.types;
+    let pokeImgUrl = currentPokemon.sprites.other.home.front_default;
     let mainSection = document.getElementById('main_section');
-    mainSection.innerHTML += `<div onclick="loadPokeInfo(${currentPokemon, pokeId})" id="poke_card${pokeId}" class="poke-card"></div>
+    mainSection.innerHTML += `<div onclick="openModal(${currentPokemon, pokeId})" id="poke_card${pokeId}" class="poke-card"></div>
         <div id="poke_modal" class="modal d-none"></div>`;
     getPokeInfo(pokeImgUrl, pokeId, currentPokemon);
 }
@@ -21,8 +20,9 @@ function getPokemon(currentPokemon, pokeId) {
     let myPokeCard = document.getElementById('poke_card' + pokeId);
     myPokeCard.innerHTML += `<P id="pokemon_id${pokeId}">#${pokeId}</p>
                             <P>${currentPokemon.name}</p>
-                            <div id="pokemon_img${pokeId}"></div>
+                            <div id="pokemon_img${pokeId}" class="poke-img-container"></div>
                             <div id="pokemon_type${pokeId}"></div>`;
+                            
 }
 
 function getTypeImg(typeUrl, pokeId) {
@@ -35,7 +35,7 @@ function getCurrentPokemon(pokemonResponse, pokeIndex) {
 
     myPokeModal.innerHTML = `<P id="single_pokemon_id">#${pokemonResponse.id}</p>
                                 <P>${pokemonResponse.name}</p>
-                                <img class="single-poke-img" src="${pokemonResponse.sprites.other.dream_world.front_default}">
+                                <img class="single-poke-img" src="${pokemonResponse.sprites.other.home.front_default}">
                             <div id="single_pokemon_type"></div>
                             <div class="category-buttons">
                                 <button onclick="loadMainInfo(${pokeIndex})" id="main_button">Main</button>
@@ -44,7 +44,7 @@ function getCurrentPokemon(pokemonResponse, pokeIndex) {
                             </div>
                             <div id="info_container"></div>
                             <div>
-                                <button onclick="previousPokemon()">Previous</button>
+                                <button onclick="previousPokemon(${pokeIndex})">Previous</button>
                                 <button onclick="nextPokemon(${pokeIndex})">Next</button>
                             </div>`;
 
