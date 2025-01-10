@@ -24,37 +24,3 @@ async function loadEvoChain(path) {
     let response = await fetch(path);        
     return responseToJson = await response.json();
 }
-
-
-
-
-
-
-async function postPokemon(path, name) {
-    let response = await fetch(BASE_URL + path + '.json', {
-        method: 'POST',
-        header: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(name)
-    });
-    return responseToJson = await response.json();
-}
-
-async function putPokemon(path, name) {
-    let response = await fetch(BASE_URL + path + '.json', {
-        method: 'PUT',
-        header: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(name)
-    });
-    return responseToJson = await response.json();
-}
-
-async function deletePokemon(path='') {
-    let response = await fetch(BASE_URL + path + '.json', {
-        method: 'DELETE',
-    });
-    return responseToJson = await response.json();
-}

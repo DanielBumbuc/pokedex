@@ -47,10 +47,11 @@ function getPokeInfo(pokeImgUrl, pokeId, currentPokemon) {
 }
 
 async function getPokeType(currentPokemon, pokeId) {    
-    
+    let backgroundImg = document.getElementById('pokemon_img' + pokeId);
     for (let typeIndex = 0; typeIndex < currentPokemon.types.length; typeIndex++) {
         let currentType = currentPokemon.types[typeIndex];
         let imgResponse = await loadPokemonInfo(currentType.type.url);
+        backgroundImg.classList.add(`bg-${currentType.type.name}`);    
         let generation = 'generation-ix';
         let generationName = 'scarlet-violet';
         let typeSprite = imgResponse.sprites[generation];
@@ -69,7 +70,7 @@ async function loadPokeInfo(currentPokemon) {
     let path = `pokemon/${pokeId}/`;
     let pokemonResponse = await loadPokemon(path);
     let speciesResponse = await loadpokeSpecies(pokemonResponse.species.url);
-    let evoChain = await loadEvoChain(speciesResponse.evolution_chain.url);
+    let evoChain = await loadEvoChain(speciesResponse.evolution_chain.url, currentPokemon);
     getCurrentPokemon(pokemonResponse, pokeId);
     getTypeInfo(pokemonResponse);
     if (mainButton == true) {
@@ -151,14 +152,22 @@ function showStats(pokemonResponse) {
     statsButton = false;
 }
 
-function showEvo(evoChain) {
-    let evoOne = evoChain.chain.species.name;
-    let evoTwo = evoChain.chain.evolves_to[0].species.name;
-    let evoThree = evoChain.chain.evolves_to[0].evolves_to[0].species.name;
+async function showEvo(evoChain) {
+    let evoOne = `pokemon/${evoChain.chain.species.name}/`;
+    let evoTwo = `pokemon/${evoChain.chain.evolves_to[0].species.name}/`;
+    let evoThree = `pokemon/${evoChain.chain.evolves_to[0].evolves_to[0].species.name}/`;
     let infoContainer = document.getElementById('info_container');
-    infoContainer.innerHTML = `<p>${evoOne}</p>
-    <p>${evoTwo}</p>
-    <p>${evoThree}</p>`;
+    let evoOneResponse = await loadPokemon(evoOne);
+    let evoTwoResponse = await loadPokemon(evoTwo);
+    let evoThreeResponse = await loadPokemon(evoThree);
+    let evoOneImg = evoOneResponse.sprites.other.home.front_default;
+    let evoTwoImg = evoTwoResponse.sprites.other.home.front_default;
+    let evoThreeImg = evoThreeResponse.sprites.other.home.front_default;
+    console.log(evoThreeResponse.sprites.other.home.front_default);
+    
+    infoContainer.innerHTML = `<img class="evo-img" src="${evoOneImg}">
+    <img class="evo-img" src="${evoTwoImg}">
+    <img class="evo-img" src="${evoThreeImg}">`;
 }
 
 function nextPokemon(pokeIndex) {
@@ -204,17 +213,12 @@ async function getPokeIndex(myPokeIndex, txtValue) {
     let pokeArr = [];
     pokeArr.push(myPokeIndex);
     console.log(pokeArr);
-
     let myFilteredPokemon = myPokeIndex.filter(pokeName => pokeName.includes(txtValue.toLowerCase()));
-
-    // let pokemonResponse = await loadPokemon('pokemon/' + myPokemon[allPokeIndex]);
     if (txtValue.length >= 3) {
         if (myFilteredPokemon != '') {
             console.log(myFilteredPokemon);
         }
     }
-
-
 }
 
 async function loadCurrentPage() {
@@ -249,4 +253,8 @@ async function loadPreviousPage() {
     showInfos(pokemonResponse.results);
 }
 
+// if evo two or three not defined → exit
+// 20th pokemon without bg-color, i have to check
+// evo img 
+// modal bg.color??
 // loading spinner
