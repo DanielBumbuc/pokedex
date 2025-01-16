@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,18 +8,25 @@
     <link rel="stylesheet" href="./styles/img.css">
     <link rel="stylesheet" href="./styles/modal.css">
     <link rel="stylesheet" href="./styles/color.css">
+    <link rel="stylesheet" href="./styles/loading.css">
+    <link rel="stylesheet" href="./styles/button.css">
     <script src="./script.js"></script>
     <script src="./scripts/template.js"></script>
     <script src="./scripts/db.js"></script>
+    <script src="./scripts/modal.js"></script>
     <title>PokeDex</title>
 </head>
+
 <body onload="init()">
     <div onclick="closeModal()" id="overlay" class="overlay d-none"></div>
     <div class="content-style">
         <nav class="">
-            <img src="#" alt="Logo">
-            <input onkeyup="searchPokemon()" id="my_input" type="text">
-            <p id="min_text_info"></p>
+            <p class="logo-txt"><img class="logo-img" src="./assets/img/icons8-pokemon-ball-white-64.png"
+                    alt="Logo">Pokedex</p>
+            <div class="input-container">
+                <input onkeyup="searchPokemon()" id="my_input" type="text" placeholder="search Pokemon...">
+                <p id="min_text_info"></p>
+            </div>
         </nav>
 
         <section id="main_section" class="main-section fill">
@@ -29,6 +37,7 @@
             <img src="#" alt="Logo">
         </footer>
     </div>
-    
+
 </body>
+
 </html>

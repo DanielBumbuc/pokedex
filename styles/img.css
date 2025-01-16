@@ -1,13 +1,26 @@
+.logo-img {
+    width: 32px;
+}
+
 .single-poke-img {
     width: 100px;
 }
 
 .pokemon-img {
     width: 80px;
+    filter: drop-shadow(1px -1px 6px black);
 }
 
 .type-icon {
-    width: 48px;
+    width: 60px;
+}
+
+.pokemon-type {
+    height: 34px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
 }
 
 .evo-img {

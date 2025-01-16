@@ -18,10 +18,7 @@ async function showInfos(pokemonResponse) {
         let loadCurrentPokemon = await loadPokemonInfo(pokemonUrl);
         getMainSection(loadCurrentPokemon);
     }
-    pokeCard.innerHTML += `<div>
-                                <button onclick="loadPreviousPage()">previous</button>
-                                <button onclick="loadNextPage()">next</button>
-                            </div>`
+    getPageButton(); 
 }
 
 function showFilteredInfos(pokemonResponse) {
@@ -34,10 +31,7 @@ function showFilteredInfos(pokemonResponse) {
         <div id="poke_modal" class="modal d-none"></div>`;
         getPokeInfo(pokemonId, pokeIndex, pokemon);
     }
-    pokeCard.innerHTML += `<div>
-                                <button onclick="loadPreviousPage()">previous</button>
-                                <button onclick="loadNextPage()">next</button>
-                            </div>`
+    getPageButton();
 }
 
 function getPokeInfo(pokeImgUrl, pokeId, currentPokemon) {
@@ -46,12 +40,13 @@ function getPokeInfo(pokeImgUrl, pokeId, currentPokemon) {
     getPokeType(currentPokemon, pokeId);
 }
 
-async function getPokeType(currentPokemon, pokeId) {    
+async function getPokeType(currentPokemon, pokeId) {
     let backgroundImg = document.getElementById('pokemon_img' + pokeId);
+    let typeName = currentPokemon.types[0].type.name;
+    backgroundImg.classList.add(`bg-${typeName}`);
     for (let typeIndex = 0; typeIndex < currentPokemon.types.length; typeIndex++) {
         let currentType = currentPokemon.types[typeIndex];
         let imgResponse = await loadPokemonInfo(currentType.type.url);
-        backgroundImg.classList.add(`bg-${currentType.type.name}`);    
         let generation = 'generation-ix';
         let generationName = 'scarlet-violet';
         let typeSprite = imgResponse.sprites[generation];
@@ -80,112 +75,9 @@ async function loadPokeInfo(currentPokemon) {
         showStats(pokemonResponse);
         return statsButton = false;
     } if (evoButton == true) {
-        showEvo(evoChain);
+        checkEvoTwo(evoChain);
         return evoButton = false;
     }
-}
-
-function openModal(currentPokemon) {
-    let myModal = document.getElementById('poke_modal');
-    let overlay = document.getElementById('overlay');
-    myModal.classList.remove('d-none');
-    overlay.classList.remove('d-none');
-    mainButton = true;
-    loadPokeInfo(currentPokemon);
-}
-
-function closeModal() {
-    let myModal = document.getElementById('poke_modal');
-    let overlay = document.getElementById('overlay');
-    myModal.classList.add('d-none');
-    overlay.classList.add('d-none');
-}
-
-
-async function getTypeInfo(pokemonResponse) {
-    let singlePokeType = document.getElementById('single_pokemon_type');
-    for (let typesIndex = 0; typesIndex < pokemonResponse.types.length; typesIndex++) {
-        let typeUrl = pokemonResponse.types[typesIndex].type.url;
-        let typeResponse = await loadPokeType(typeUrl);
-        let generationName = 'scarlet-violet';
-        let generation = 'generation-ix';
-        let typeSprites = typeResponse.sprites[generation];
-        singlePokeType.innerHTML += `<img class="type-icon" src="${typeSprites[generationName].name_icon}">`;
-    }
-}
-
-function showMainInfo(pokemonResponse) {
-    let pokemonHeight = pokemonResponse.height;
-    let pokemonWeight = pokemonResponse.weight;
-    let baseExperience = pokemonResponse.base_experience;
-    getMainInfo(pokemonHeight, pokemonWeight, baseExperience);
-    for (let abilitiesIndex = 0; abilitiesIndex < pokemonResponse.abilities.length; abilitiesIndex++) {
-        let abilities = pokemonResponse.abilities[abilitiesIndex].ability.name;
-        getAbilities(abilities);
-    }
-}
-
-function loadMainInfo(pokeIndex) {
-    let pokeId = pokeIndex;
-    mainButton = true;
-    loadPokeInfo(pokeId);
-}
-
-function loadStats(pokeIndex) {
-    let pokeId = pokeIndex;
-    statsButton = true;
-    loadPokeInfo(pokeId);
-}
-
-function loadEvo(pokeIndex) {
-    let pokeId = pokeIndex;
-    evoButton = true;
-    loadPokeInfo(pokeId);
-}
-
-function showStats(pokemonResponse) {
-    let infoContainer = document.getElementById('info_container');
-    let statArr = ['HP ', 'Attack ', 'Defense ', 'Special Attack ', 'Special Defense ', 'Speed '];
-    for (let statsIndex = 0; statsIndex < pokemonResponse.stats.length; statsIndex++) {
-        infoContainer.innerHTML += `<P>${statArr[statsIndex] + pokemonResponse.stats[statsIndex].base_stat}</p>`
-    }
-    statsButton = false;
-}
-
-async function showEvo(evoChain) {
-    let evoOne = `pokemon/${evoChain.chain.species.name}/`;
-    let evoTwo = `pokemon/${evoChain.chain.evolves_to[0].species.name}/`;
-    let evoThree = `pokemon/${evoChain.chain.evolves_to[0].evolves_to[0].species.name}/`;
-    let infoContainer = document.getElementById('info_container');
-    let evoOneResponse = await loadPokemon(evoOne);
-    let evoTwoResponse = await loadPokemon(evoTwo);
-    let evoThreeResponse = await loadPokemon(evoThree);
-    let evoOneImg = evoOneResponse.sprites.other.home.front_default;
-    let evoTwoImg = evoTwoResponse.sprites.other.home.front_default;
-    let evoThreeImg = evoThreeResponse.sprites.other.home.front_default;
-    console.log(evoThreeResponse.sprites.other.home.front_default);
-    
-    infoContainer.innerHTML = `<img class="evo-img" src="${evoOneImg}">
-    <img class="evo-img" src="${evoTwoImg}">
-    <img class="evo-img" src="${evoThreeImg}">`;
-}
-
-function nextPokemon(pokeIndex) {
-    let pokeId = pokeIndex + 1;
-    mainButton = true;
-    if (pokeId > 1025) {
-        return
-    }
-    loadPokeInfo(pokeId);
-}
-
-function previousPokemon(pokeIndex) {
-    let pokeId = pokeIndex - 1;
-    mainButton = true;
-    if (pokeId < 1) {
-        return
-    }
-    loadPokeInfo(pokeId);
 }
 
 async function searchPokemon() {
@@ -198,21 +90,21 @@ async function searchPokemon() {
     filteredPokemon.push(result);
     if (txtValue.length >= 3) {
         minTextInfo.innerHTML = '';
-        console.log(filteredPokemon[0]);
         showInfos(filteredPokemon[0])
     } else {
         minTextInfo.innerHTML = 'type min three letters';
+    } if(txtValue.length <= 0) {
+        minTextInfo.innerHTML = '';
     } if (txtValue.length < 2) {
         return
     } if (txtValue.length < 3) {
         loadAllPokemon();
-    }
+    } 
 }
 
 async function getPokeIndex(myPokeIndex, txtValue) {
     let pokeArr = [];
     pokeArr.push(myPokeIndex);
-    console.log(pokeArr);
     let myFilteredPokemon = myPokeIndex.filter(pokeName => pokeName.includes(txtValue.toLowerCase()));
     if (txtValue.length >= 3) {
         if (myFilteredPokemon != '') {
@@ -253,8 +145,5 @@ async function loadPreviousPage() {
     showInfos(pokemonResponse.results);
 }
 
-// if evo two or three not defined → exit
-// 20th pokemon without bg-color, i have to check
-// evo img 
-// modal bg.color??
-// loading spinner
+// outsource modal Code in modal.js
+// outsorce evo Images in template

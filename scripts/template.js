@@ -18,10 +18,12 @@ function getMainSection(currentPokemon) {
 
 function getPokemon(currentPokemon, pokeId) {
     let myPokeCard = document.getElementById('poke_card' + pokeId);
-    myPokeCard.innerHTML += `<P id="pokemon_id${pokeId}">#${pokeId}</p>
-                            <P>${currentPokemon.name}</p>
+    myPokeCard.innerHTML += `<div class="id-container">
+                                <P id="pokemon_id${pokeId}">#${pokeId}</p>
+                                <P class="poke-name">${currentPokemon.name}</p>
+                            </div>
                             <div id="pokemon_img${pokeId}" class="poke-img-container"></div>
-                            <div id="pokemon_type${pokeId}"></div>`;
+                            <div id="pokemon_type${pokeId}" class="pokemon-type"></div>`;
                             
 }
 
@@ -35,7 +37,9 @@ function getCurrentPokemon(pokemonResponse, pokeIndex) {
 
     myPokeModal.innerHTML = `<P id="single_pokemon_id">#${pokemonResponse.id}</p>
                                 <P>${pokemonResponse.name}</p>
+                                <div id="img_container">
                                 <img class="single-poke-img" src="${pokemonResponse.sprites.other.home.front_default}">
+                                </div>
                             <div id="single_pokemon_type"></div>
                             <div class="category-buttons">
                                 <button onclick="loadMainInfo(${pokeIndex})" id="main_button">Main</button>
@@ -44,8 +48,9 @@ function getCurrentPokemon(pokemonResponse, pokeIndex) {
                             </div>
                             <div id="info_container"></div>
                             <div>
-                                <button onclick="previousPokemon(${pokeIndex})">Previous</button>
+                                <button onclick="previousPokemon(${pokeIndex})">Prev</button>
                                 <button onclick="nextPokemon(${pokeIndex})">Next</button>
+                                <button onclick="closeModal()">Close</button>
                             </div>`;
 
 }
@@ -71,4 +76,12 @@ function getStats(pokemonHp, pokemonattack, basedefense, pokemonSpecialAttack, p
                             <P>${pokemonSpecialAttack}</p>
                             <P>${pokemonSpecialDefense}</p>
                             <P>${pokemonSpeed}</p>`;
+}
+
+function getPageButton() {
+    let pokeCard = document.getElementById('main_section');
+    pokeCard.innerHTML += `<div class="page-button">
+                                <button onclick="loadPreviousPage()">prev</button>
+                                <button onclick="loadNextPage()">next</button>
+                            </div>`;
 }
