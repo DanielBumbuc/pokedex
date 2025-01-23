@@ -1,7 +1,73 @@
-.page-button {
+.btn-style {
     display: flex;
+    flex: 1;
     justify-content: center;
     align-items: center;
-    gap: 16px;
-    width: 100%;
+}
+
+.main-btn {
+    border-right: 1px solid black;
+    border-bottom: 2px solid #1F1F4C;
+}
+
+.main-btn:hover {
+    border-bottom: 2px solid #bbc1ee;
+}
+
+.stats-btn:hover {
+    border-bottom: 2px solid #bbc1ee;
+}
+
+.stats-btn {
+    border-bottom: 2px solid #1F1F4C;
+}
+
+.evo-btn {
+    border-left: 1px solid black;
+    border-bottom: 2px solid #1F1F4C;
+}
+
+.evo-btn:hover {
+    border-bottom: 2px solid #bbc1ee;
+}
+
+.nav-btn {
+    cursor: pointer;
+    width: 24px;
+}
+
+.nav-btn:hover {
+    filter: drop-shadow(0 0 3px white);
+}
+
+.img_on {
+    cursor: pointer;
+    width: 24px;
+}
+
+.img_off {
+    cursor: pointer
+}
+
+.img_off,
+#close:hover .img_on {
+    display: none;
+}
+
+.img_on,
+#close:hover .img_off {
+    display: block;
+}
+
+.page-btn {
+    cursor: pointer;
+    color: white;
+    border: none;
+    border-radius: 3px;
+    background-color: #003674;
+    /* box-shadow: inset -1px 3px 8px 5px #003674, 2px 2px 5px 0px #0B325E; */
+}
+
+.page-btn:hover {
+    box-shadow: inset -1px 3px 8px 5px #0357b7, 3px 5px 16px 0px #0B325E;
 }

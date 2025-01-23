@@ -1,14 +1,23 @@
 * {
     margin: 0;
     box-sizing: border-box;
+    font-family: "Varela Round", serif;
 }
 
 body {
+    height: 100vh;
     background-color: rgb(24, 24, 51);
+    display: flex;
+    flex-direction: column;
 }
 
-.content-style {
+.nav-content {
     max-width: 1920px;
+    height: 60px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 16px;
 }
 
 .fill {
@@ -16,26 +25,30 @@ body {
 }
 
 nav {
+    background-color: #505079;
+}
+
+.footer-content {
+    max-width: 1920px;
     height: 48px;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin: 8px 16px;
+    flex-direction: row;
+    padding: 8px 16px;
 }
 
 footer {
-    height: 48px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin: 0 8px;
+    background-color: #505079;
 }
 
 .main-section {
+    max-width: 1920px;
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
     box-shadow: rgba(0, 0, 0, 1);
+    margin-top: 24px;
 }
 
 .logo-txt {
@@ -43,45 +56,38 @@ footer {
     justify-content: center;
     align-items: center;
     color: white;
-}
-
-.poke-card {
-    cursor: pointer;
-    height: 162px;
-    width: 160px;
-    margin: 8px;
-    border-radius: 8px;
-    color: white;
-    background-color: #272769;
-}
-
-.poke-img-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding-bottom: 14px;
-}
-
-.id-container {
-    display: flex;
-    justify-content: first baseline;
-    align-items: center;
-    padding: 4px 8px;
-}
-
-.poke-name {
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    padding-right: 18px;
+    text-decoration: none;
 }
 
 input {
     outline: none;
+    height: 24px;
+    border: none;
+    border-radius: 4px;
+}
+
+.input-container {
+    height: 100%;
+    display: flex;
+    justify-content: flex-start;
+    align-items: start;
+    flex-direction: column;
+    margin-top: 24px;
 }
 
 #min_text_info {
     color: red;
+    font-size: 8px;
+    padding-top: -8px;
+}
+
+.page-btn-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 24px;
+    width: 100%;
+    margin: 24px;
 }
 
 .d-none {

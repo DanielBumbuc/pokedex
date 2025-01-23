@@ -25,18 +25,22 @@ async function getTypeInfo(pokemonResponse) {
         let generationName = 'scarlet-violet';
         let generation = 'generation-ix';
         let typeSprites = typeResponse.sprites[generation];
-        singlePokeType.innerHTML += `<img class="type-icon" src="${typeSprites[generationName].name_icon}">`;
+        singlePokeType.innerHTML += `<img class="single-type-icon" src="${typeSprites[generationName].name_icon}">`;
     }
 }
 
 function showMainInfo(pokemonResponse) {
+    let evoContainer = document.getElementById('evo_container');
+    let statsContainer = document.getElementById('stats_container');
     let pokemonHeight = pokemonResponse.height;
     let pokemonWeight = pokemonResponse.weight;
     let baseExperience = pokemonResponse.base_experience;
-    getMainInfo(pokemonHeight, pokemonWeight, baseExperience);
+    evoContainer.classList.add('d-none');
+    statsContainer.classList.add('d-none');
+    insertComma(pokemonHeight, pokemonWeight, baseExperience);
     for (let abilitiesIndex = 0; abilitiesIndex < pokemonResponse.abilities.length; abilitiesIndex++) {
         let abilities = pokemonResponse.abilities[abilitiesIndex].ability.name;
-        getAbilities(abilities);
+        getAbilities(abilities, abilitiesIndex);
     }
 }
 
@@ -59,12 +63,27 @@ function loadEvo(pokeIndex) {
 }
 
 function showStats(pokemonResponse) {
-    let infoContainer = document.getElementById('info_container');
+    let evoContainer = document.getElementById('evo_container');
+    let mainContainer = document.getElementById('info_container');
+    let infoContainer = document.getElementById('stats_container');
     let statArr = ['HP ', 'Attack ', 'Defense ', 'Special Attack ', 'Special Defense ', 'Speed '];
+    evoContainer.classList.add('d-none');
+    mainContainer.classList.add('d-none');
     for (let statsIndex = 0; statsIndex < pokemonResponse.stats.length; statsIndex++) {
-        infoContainer.innerHTML += `<P>${statArr[statsIndex] + pokemonResponse.stats[statsIndex].base_stat}</p>`
+        infoContainer.innerHTML += `<div class="single-stat">
+                                        <p>${statArr[statsIndex]}</p>
+                                        <div class="progress-container">    
+                                            <P class="progress-bar"     id="progress_bar${statsIndex}">${pokemonResponse.stats[statsIndex].base_stat}</p>
+                                        </div>
+                                    </div>`
+        setTimeout(() => setProgressBar(statsIndex, pokemonResponse.stats[statsIndex].base_stat), 100);
     }
     statsButton = false;
+}
+
+function setProgressBar(statsIndex, progressValue) {
+    let progressBar = document.getElementById('progress_bar' + statsIndex);
+    progressBar.style.width = progressValue + '%';    
 }
 
 function checkEvoTwo(evoChain) {
@@ -88,14 +107,22 @@ function checkEvoThree(evoChain, evoTwo) {
 }
 
 async function showEvo(evoChain, evoTwo, evoThree) {
-    let infoContainer = document.getElementById('info_container');
+    let infoContainer = document.getElementById('basic_pokemon');
+    let differentEvo = document.getElementById('different_evo');
+    let mainContainer = document.getElementById('info_container');
+    let statsContainer = document.getElementById('stats_container');
     let evoOne = `pokemon/${evoChain.chain.species.name}/`;
     let evoOneResponse = await loadPokemon(evoOne);
     let evoOneImg = evoOneResponse.sprites.other.home.front_default;
+    differentEvo.classList.add('d-none');
+    mainContainer.classList.add('d-none');
+    statsContainer.classList.add('d-none');
+    getEvoChain();
     if (evoTwo != null) {
         let evoTwoResponse = await loadPokemon(evoTwo);
         let evoTwoImg = evoTwoResponse.sprites.other.home.front_default;
-        infoContainer.innerHTML = `<img class="evo-img" src = "${evoOneImg}" >
+        infoContainer.innerHTML = `<img class="evo-img" src = "${evoOneImg}">
+            <img class="evolve-to" src="./assets/icons/icons8-rechts-50.png">
             <img class="evo-img" src="${evoTwoImg}">`;
     } else {
         infoContainer.innerHTML = `<img class="evo-img" src="${evoOneImg}">`;
@@ -105,22 +132,28 @@ async function showEvo(evoChain, evoTwo, evoThree) {
         let evoThreeResponse = await loadPokemon(evoThree);
         let evoTwoImg = evoTwoResponse.sprites.other.home.front_default;
         let evoThreeImg = evoThreeResponse.sprites.other.home.front_default;
-        infoContainer.innerHTML = `<img class="evo-img" src = "${evoOneImg}" >
+        infoContainer.innerHTML = `<img class="evo-img" src = "${evoOneImg}">
+            <img class="evolve-to" src="./assets/icons/icons8-rechts-50.png">
             <img class="evo-img" src="${evoTwoImg}">
+            <img class="evolve-to" src="./assets/icons/icons8-rechts-50.png">
                 <img class="evo-img" src="${evoThreeImg}">`;
     } else {
         let evoTwoResponse = await loadPokemon(evoTwo);
         let evoTwoImg = evoTwoResponse.sprites.other.home.front_default;
-        infoContainer.innerHTML = `<img class="evo-img" src = "${evoOneImg}" >
+        infoContainer.innerHTML = `<img class="evo-img" src = "${evoOneImg}">
+            <img class="evolve-to" src="./assets/icons/icons8-rechts-50.png">
             <img class="evo-img" src="${evoTwoImg}">`;
     }
     if (evoChain.chain.evolves_to.length > 1) {
-        infoContainer.innerHTML = `<img class="evo-img" src = "${evoOneImg}">`;
+        differentEvo.classList.remove('d-none');
+        infoContainer.innerHTML = `<img class="evo-img" src = "${evoOneImg}">
+                                    <img class="evolve-to" src="./assets/icons/icons8-rechts-50.png">`;
         for (let evoIndex = 0; evoIndex < evoChain.chain.evolves_to.length; evoIndex++) {
             let evoNames = `pokemon/${evoChain.chain.evolves_to[evoIndex].species.name}/`;
             let evoNamesResponse = await loadPokemon(evoNames);
             let evoNamesImg = evoNamesResponse.sprites.other.home.front_default;
-            infoContainer.innerHTML += `<div><img class="evo-img" src = "${evoNamesImg}"></div>`;
+            differentEvo.innerHTML += `<img class="evo-img" src = "${evoNamesImg}">`;
+            
         }
     }
 

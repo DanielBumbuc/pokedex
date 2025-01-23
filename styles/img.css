@@ -9,10 +9,16 @@
 .pokemon-img {
     width: 80px;
     filter: drop-shadow(1px -1px 6px black);
+    transition: transform 0.5s;
 }
 
 .type-icon {
     width: 60px;
+}
+
+.single-type-icon {
+    width: 80px;
+    margin: 12px;
 }
 
 .pokemon-type {
@@ -20,7 +26,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    gap: 8px;
+    gap: 16px;
 }
 
 .evo-img {

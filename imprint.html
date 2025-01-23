@@ -22,20 +22,43 @@
     <title>PokeDex</title>
 </head>
 
-<body onload="init()">
-    <div onclick="closeModal()" id="overlay" class="overlay d-none"></div>
+<body>
+    <div id="overlay" class="overlay d-none"></div>
+
     <nav>
         <div class="nav-content">
             <a href="./index.html" class="logo-txt"><img class="logo-img"
                     src="./assets/img/icons8-pokemon-ball-white-64.png" alt="Logo">Pokedex</a>
-            <div class="input-container">
-                <input onkeyup="searchPokemon()" id="my_input" type="text" placeholder="search Pokemon...">
-                <p id="min_text_info"></p>
-            </div>
         </div>
     </nav>
-    <section id="main_section" class="main-section fill"></section>
+    <div class="content-style">
+        <section id="main_section" class="imprint-style fill">
+            <div id="imprint_container" class="imprint-container fill">
 
+                <h1>Impressum</h1>
+
+                <br>
+                <br>
+
+                <p>Daniel Bumbuc<br />
+                    Dachsklingeweg 7<br />
+                    71067 Sindelfingen</p>
+
+                <br>
+                <br>
+
+                <h2>Kontakt</h2>
+                <p>Telefon: +49(0)17623979755<br />
+                    Telefax: ----<br />
+                    E-Mail: bumbucd@gmail.com</p>
+
+                <p>Quelle: <a
+                        href="https://www.e-recht24.de/impressum-generator.html">https://www.e-recht24.de/impressum-generator.html</a>
+                </p>
+
+            </div>
+        </section>
+    </div>
 
     <footer>
         <div class="footer-content">
@@ -49,6 +72,7 @@
             </div>
         </div>
     </footer>
+
 
 </body>
 

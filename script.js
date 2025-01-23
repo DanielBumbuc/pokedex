@@ -4,7 +4,7 @@ async function init() {
 
 async function loadAllPokemon() {
     let allPokemonResponse = await loadPokemon('pokemon?limit=1025&offset=0');
-    let pokemonResponse = await loadPokemon('pokemon?limit=20&offset=' + pokemonStart);
+    let pokemonResponse = await loadPokemon('pokemon?limit=18&offset=' + pokemonStart);
     showInfos(pokemonResponse.results);
     allPokemon.push(allPokemonResponse);
 }
@@ -18,7 +18,7 @@ async function showInfos(pokemonResponse) {
         let loadCurrentPokemon = await loadPokemonInfo(pokemonUrl);
         getMainSection(loadCurrentPokemon);
     }
-    getPageButton(); 
+    getPageButton();
 }
 
 function showFilteredInfos(pokemonResponse) {
@@ -38,6 +38,7 @@ function getPokeInfo(pokeImgUrl, pokeId, currentPokemon) {
     getPokemon(currentPokemon, pokeId);
     getPokeImg(pokeImgUrl, pokeId);
     getPokeType(currentPokemon, pokeId);
+    firstLetterPokeCard(pokeId);
 }
 
 async function getPokeType(currentPokemon, pokeId) {
@@ -67,6 +68,7 @@ async function loadPokeInfo(currentPokemon) {
     let speciesResponse = await loadpokeSpecies(pokemonResponse.species.url);
     let evoChain = await loadEvoChain(speciesResponse.evolution_chain.url, currentPokemon);
     getCurrentPokemon(pokemonResponse, pokeId);
+    firstLetterModal();
     getTypeInfo(pokemonResponse);
     if (mainButton == true) {
         showMainInfo(pokemonResponse);
@@ -93,13 +95,13 @@ async function searchPokemon() {
         showInfos(filteredPokemon[0])
     } else {
         minTextInfo.innerHTML = 'type min three letters';
-    } if(txtValue.length <= 0) {
+    } if (txtValue.length <= 0) {
         minTextInfo.innerHTML = '';
     } if (txtValue.length < 2) {
         return
     } if (txtValue.length < 3) {
         loadAllPokemon();
-    } 
+    }
 }
 
 async function getPokeIndex(myPokeIndex, txtValue) {
@@ -108,7 +110,6 @@ async function getPokeIndex(myPokeIndex, txtValue) {
     let myFilteredPokemon = myPokeIndex.filter(pokeName => pokeName.includes(txtValue.toLowerCase()));
     if (txtValue.length >= 3) {
         if (myFilteredPokemon != '') {
-            console.log(myFilteredPokemon);
         }
     }
 }
@@ -123,8 +124,8 @@ async function loadCurrentPage() {
 
 async function loadNextPage() {
     let pokeCard = document.getElementById('main_section');
-    let nextPokemons = pokemonStart + 20;
-    let pokemonResponse = await loadPokemon('pokemon?limit=20&offset=' + nextPokemons);
+    let nextPokemons = pokemonStart + 18;
+    let pokemonResponse = await loadPokemon('pokemon?limit=18&offset=' + nextPokemons);
     if (pokemonStart >= 1005) {
         return
     }
@@ -135,8 +136,8 @@ async function loadNextPage() {
 
 async function loadPreviousPage() {
     let pokeCard = document.getElementById('main_section');
-    let previousPokemons = pokemonStart - 20;
-    let pokemonResponse = await loadPokemon('pokemon?limit=20&offset=' + previousPokemons);
+    let previousPokemons = pokemonStart - 18;
+    let pokemonResponse = await loadPokemon('pokemon?limit=18&offset=' + previousPokemons);
     if (previousPokemons < 0) {
         return
     }
@@ -145,5 +146,45 @@ async function loadPreviousPage() {
     showInfos(pokemonResponse.results);
 }
 
+function firstLetterPokeCard(pokeId) {
+    let pokeName = document.getElementById('pokemon_name' + pokeId);
+    let firstLetter = pokeName.innerHTML.charAt(0);
+    let firstLetterCap = firstLetter.toUpperCase()
+    let remainingLetters = pokeName.innerHTML.slice(1)
+    let capitalizedWord = firstLetterCap + remainingLetters
+    pokeName.innerHTML = capitalizedWord;
+}
+
+function firstLetterModal() {
+    let pokeName = document.getElementById('single_poke_id');
+    let firstLetter = pokeName.innerHTML.charAt(0);
+    let firstLetterCap = firstLetter.toUpperCase()
+    let remainingLetters = pokeName.innerHTML.slice(1)
+    let capitalizedWord = firstLetterCap + remainingLetters
+    pokeName.innerHTML = capitalizedWord;
+}
+
+function firstLetterAbilitiy(abilityIndex) {
+    let abilityName = document.getElementById('ability' + abilityIndex); 
+    let firstLetter = abilityName.innerHTML.charAt(0);
+    let firstLetterCap = firstLetter.toUpperCase()
+    let remainingLetters = abilityName.innerHTML.slice(1)
+    let capitalizedWord = firstLetterCap + remainingLetters
+    abilityName.innerHTML = capitalizedWord;
+}
+
+function insertComma(pokemonHeight, pokemonWeight, baseExperience) {
+    let numStrWeight = pokemonWeight.toString();
+    let numStrHeight = pokemonHeight.toString();
+    let resultWeight = numStrWeight.slice(0, -1) + "," + numStrWeight.slice(-1);
+    let resultHeight = numStrHeight.slice(0, -1) + "," + numStrHeight.slice(-1);
+    if (numStrWeight.length === 1) {
+        resultWeight = "0," + numStrWeight;
+    }
+    if (numStrHeight.length === 1) {
+        resultHeight = "0," + numStrHeight;
+    }
+    getMainInfo(resultHeight, resultWeight, baseExperience);
+}
 // outsource modal Code in modal.js
 // outsorce evo Images in template

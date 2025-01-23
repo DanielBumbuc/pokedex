@@ -1,0 +1,38 @@
+.poke-card {
+    cursor: pointer;
+    height: 162px;
+    width: 160px;
+    margin: 8px;
+    border-radius: 8px;
+    color: white;
+    background-color: #272769;
+}
+
+.poke-card:hover .poke-img-container .pokemon-img{
+    transform: scale(1.2);
+}
+
+.poke-img-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-bottom: 14px;
+}
+
+.id-container {
+    display: flex;
+    justify-content: first baseline;
+    align-items: center;
+    padding: 4px 8px;
+}
+
+.poke-name {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    padding-right: 18px;
+}
+
+.poke-id {
+    font-weight: bold;
+}
